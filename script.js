@@ -1,15 +1,18 @@
-const skills = ['C Programming', 'HTML5', 'CSS3', 'JavaScript', 'Git', 'Data Structures', 'Linux'];
-
-const container = document.getElementById('skills-container');
-
-// Dynamically load skills
-skills.forEach(skill => {
-    const span = document.createElement('span');
-    span.className = 'skill-tag';
-    span.innerText = skill;
-    container.appendChild(span);
-});
-
-// Simple Console Greeting for recruiters
-console.log("Welcome to Mohan G S's Digital Resume 2026!");
-
+async function getRepos() {
+    const user = 'Mohangs528';
+    const container = document.getElementById('repo-container');
+    try {
+        const response = await fetch(`https://api.github.com{user}/repos?sort=updated&per_page=4`);
+        const repos = await response.json();
+        container.innerHTML = repos.map(repo => `
+            <div class="repo-item">
+                <h4 style="margin:0; color:#3b82f6;">${repo.name}</h4>
+                <p style="font-size:0.8rem; color:#94a3b8;">${repo.description || 'CS Diploma Project'}</p>
+                <a href="${repo.html_url}" target="_blank" style="color:white; font-size:0.7rem;">Code →</a>
+            </div>
+        `).join('');
+    } catch (err) {
+        container.innerHTML = '<p>Check my GitHub for projects.</p>';
+    }
+}
+getRepos();
